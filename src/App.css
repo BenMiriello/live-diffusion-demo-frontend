@@ -1,0 +1,506 @@
+:root {
+  --primary-color: #3b82f6;
+  --error-color: #ef4444;
+  --success-color: #22c55e;
+  --warning-color: #f59e0b;
+  --neutral-color: #6b7280;
+  --background-color: #f8fafc;
+  --card-background: #ffffff;
+  --border-color: #e2e8f0;
+  --text-color: #1e293b;
+  --text-light: #64748b;
+  --header-height: 60px;
+  --controls-bar-height: 48px;
+}
+
+/* Global styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* App Layout */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.app-header {
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.header-left h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.mini-camera {
+  width: 120px;
+  height: 90px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+/* Controls bar */
+.controls-bar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background-color: var(--card-background);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.controls-preview {
+  height: var(--controls-bar-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.prompt-preview {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-light);
+  padding-right: 16px;
+}
+
+.toggle-controls-button {
+  background: none;
+  color: var(--primary-color);
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toggle-icon {
+  font-size: 12px;
+}
+
+.controls-panel {
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--card-background);
+}
+
+/* Main content */
+.app-main {
+  flex: 1;
+  margin-top: calc(var(--header-height) + var(--controls-bar-height));
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Connection status */
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.status-dot.connected {
+  background-color: var(--success-color);
+}
+
+.status-dot.connecting {
+  background-color: var(--warning-color);
+}
+
+.status-dot.disconnected {
+  background-color: var(--neutral-color);
+}
+
+.status-dot.error {
+  background-color: var(--error-color);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 14px;
+}
+
+/* Camera view */
+.camera-view {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #f1f5f9;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-video.mirrored {
+  transform: scaleX(-1);
+}
+
+.camera-video.hidden {
+  display: none;
+}
+
+.camera-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.camera-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 4px 8px;
+  background-color: var(--error-color);
+  color: white;
+  font-size: 12px;
+  z-index: 10;
+}
+
+/* Main view */
+.main-view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.view-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.processed-view {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f5f9;
+  height: 100%;
+  min-height: 60vh;
+}
+
+.processed-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.processing-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  z-index: 10;
+}
+
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-light);
+  font-size: 16px;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid white;
+  width: 32px;
+  height: 32px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Prompt input */
+.prompt-input {
+  margin-bottom: 16px;
+}
+
+.prompt-container,
+.negative-prompt-container {
+  margin-bottom: 12px;
+}
+
+.prompt-label,
+.negative-prompt-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.prompt-textarea,
+.negative-prompt-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 60px;
+  font-size: 14px;
+}
+
+.negative-prompt-toggle {
+  margin-bottom: 12px;
+}
+
+.toggle-button {
+  background-color: #f1f5f9;
+  color: var(--text-color);
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+.prompt-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-button,
+.apply-button {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Control panel */
+.control-panel {
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.panel-header h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-group label {
+  font-size: 14px;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #e2e8f0;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+.seed-control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.seed-toggle label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.seed-input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.seed-input input {
+  padding: 4px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.control-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Connection controls */
+.connection-controls {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.connect-button {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.disconnect-button {
+  background-color: var(--error-color);
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .app-header {
+    padding: 0 24px;
+  }
+  
+  .controls-preview {
+    padding: 0 24px;
+  }
+  
+  .controls-panel {
+    padding: 24px;
+  }
+  
+  .app-main {
+    padding: 0 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-height: 48px;
+  }
+  
+  .header-left h1 {
+    font-size: 20px;
+  }
+  
+  .mini-camera {
+    width: 80px;
+    height: 60px;
+  }
+  
+  .prompt-preview {
+    font-size: 14px;
+  }
+  
+  .toggle-controls-button {
+    font-size: 14px;
+  }
+  
+  .processed-view {
+    min-height: 40vh;
+  }
+}
