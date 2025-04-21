@@ -12,7 +12,14 @@ export enum ConnectionStatus {
 const RECONNECT_INTERVAL = 5000; // ms
 
 // Base WebSocket URL - can be overridden with environment variable
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
+// Automatically convert ws:// to wss:// if the page is loaded over HTTPS
+let WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
+
+// If we're on HTTPS, ensure the WebSocket connection is secure (WSS)
+if (window.location.protocol === 'https:' && WS_URL.startsWith('ws://')) {
+  WS_URL = WS_URL.replace('ws://', 'wss://');
+  console.log('Converted WebSocket URL to secure connection:', WS_URL);
+}
 
 export function useWebSocket() {
   const [status, setStatus] = useState<ConnectionStatus>(ConnectionStatus.DISCONNECTED);

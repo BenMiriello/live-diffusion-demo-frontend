@@ -1,5 +1,11 @@
 // Base API URL - can be overridden with environment variable
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+let API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+// If we're on HTTPS, ensure API calls also use HTTPS
+if (window.location.protocol === 'https:' && API_URL.startsWith('http://')) {
+  API_URL = API_URL.replace('http://', 'https://');
+  console.log('Converted API URL to secure connection:', API_URL);
+}
 
 // Error type interface
 interface ApiError {
